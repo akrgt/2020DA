@@ -3123,6 +3123,60 @@ slide:not(.current) .plotly.html-widget{
           </hgroup>
   </slide>
 
+<!-- Script for adding ToC !-->
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+  TableOfContents();
+}
+);                        
+
+function TableOfContents(container, output) {
+
+var output = output || '#toc';
+
+// Get all elements with class: section or subsection
+idfromclass = document.querySelectorAll('.section, .subsection');
+
+    // Create the list element:
+    var list = document.createElement('ul');
+
+    // Iterate through all found elements
+    for(var i = 0; i < idfromclass.length; i++) {
+
+        // Create the list item:
+        var item = document.createElement('li');
+
+        // Set its contents:
+        var id = idfromclass[i].id
+
+        // Replace - in id with whitespace
+        var titleText = id.replace(/-/gi, " ");
+
+        // Add text to list element
+        item.appendChild(document.createTextNode(titleText));
+
+        // Add subsection class
+        item.className = idfromclass[i].className
+
+        // Add it to the list:
+        list.appendChild(item);
+    }
+
+// Return generated HTML to toc div in slide
+document.querySelector(output).innerHTML = list.innerHTML;
+
+// Generate instruction message if no classes are defined
+if (idfromclass.length == 0) { document.querySelector(output).innerHTML = "Add {.section} or {.subsection} to slide name to generate TOC"; }  
+
+};
+</script>
+
+<slide class=""><hgroup><h2>Table of content</h2></hgroup><article  id="table-of-content">
+
+<div id="toc">
+</div>
+
 <style type="text/css">
 
 #content {
@@ -3231,27 +3285,7 @@ math display {
 
 </style>
 
-<slide class="segue dark nobackground level1"><hgroup class = 'auto-fadein'><h2>講義資料</h2></hgroup><article  id="講義資料">
-
-</article></slide><slide class=""><hgroup><h2>はじめに</h2></hgroup><article  id="はじめに">
-
-<ul>
-<li>今日Rを中心として使います．
-
-<ul>
-<li>ちょっとプログラミング感が強いです．</li>
-</ul></li>
-<li>プログラミングっぽいのは今日までです．頑張りましょう．
-
-<ul>
-<li>次回からはクリックを中心に作業していきます．</li>
-</ul></li>
-<li>次回からは&ldquo;jamovi&rdquo;を中心に使います．
-
-<ul>
-<li>アドバンストピックとしてRStudioについても使い方を紹介するという形にします．</li>
-</ul></li>
-</ul>
+</article></slide><slide class="segue dark nobackground level1"><hgroup class = 'auto-fadein'><h2>前回の復習</h2></hgroup><article  id="前回の復習" class="section">
 
 </article></slide><slide class=""><hgroup><h2>平均値・分散・標準偏差とは？</h2></hgroup><article  id="平均値分散標準偏差とは">
 
@@ -3333,10 +3367,6 @@ math display {
 
 <pre class = 'prettyprint lang-r'>weight&lt;-c(50, 60, 85, 70, 80, 67, 66)</pre>
 
-<h3>演習：</h3>
-
-<p>同じ7人の学生の身長が155, 164, 182, 165, 177, 177, 172cmであったとする．このデータを変数名&ldquo;height&rdquo;に代入せよ．</p>
-
 </article></slide><slide class=""><hgroup><h2>記述統計量を色々出してみる．</h2></hgroup><article  id="記述統計量を色々出してみる">
 
 <pre class = 'prettyprint lang-r'>#sum()という関数で合計を算出できる
@@ -3370,10 +3400,6 @@ table(weight)  </pre>
 ## 50 60 66 67 70 80 85 
 ##  1  1  1  1  1  1  1</pre>
 
-<h3>演習：</h3>
-
-<p>変数名&ldquo;height&rdquo;の合計・個数・平均値・中央値・最頻値を求めよ．</p>
-
 </article></slide><slide class=""><hgroup><h2>体重の記述統計量をまとめて算出する．</h2></hgroup><article  id="体重の記述統計量をまとめて算出する">
 
 <pre class = 'prettyprint lang-r'>summary(weight)</pre>
@@ -3382,10 +3408,6 @@ table(weight)  </pre>
 ##   50.00   63.00   67.00   68.29   75.00   85.00</pre>
 
 <p>左から順番に「最小値，第1四分位数，中央値，平均値，第3四分位数，最大値」を示しています．</p>
-
-<h3>演習：</h3>
-
-<p>変数名&ldquo;height&rdquo;の最小値・第1四分位数・中央値・平均値・第3四分位数・最大値を求めよ．　　　</p>
 
 </article></slide><slide class="segue dark nobackground level1"><hgroup class = 'auto-fadein'><h2>分散と標準偏差を手計算で算出してみよう</h2></hgroup><article  id="分散と標準偏差を手計算で算出してみよう">
 
@@ -3498,10 +3520,6 @@ sd(weight)</pre>
 <li>手計算で求めたのは「標本分散・標本標準偏差」</li>
 </ul>
 
-<h3>演習：</h3>
-
-<p>変数&ldquo;height&rdquo;について，不偏分散および不偏標準偏差を求めてください．</p>
-
 </article></slide><slide class=""><hgroup><h2>2種類の分散と標準偏差</h2></hgroup><article  id="種類の分散と標準偏差">
 
 <p>「不偏分散・不偏標準偏差」と「標本分散・標本標準偏差」というものが出てきました．この話を理解するためには「母集団」と「標本」という話を理解する必要があります．ここでは簡単に，その2つの違いについてお話したいと思います．</p>
@@ -3515,6 +3533,10 @@ sd(weight)</pre>
 <p>このような「推定」という手法を取る時に，&ldquo;データ数&rdquo;のままで分析するよりも&ldquo;データ数-1&rdquo;で計算してあげたほうがよりよい推定ができる，ということで&ldquo;データ数-1&rdquo;をするようになりました．</p>
 
 <p>本当はもう少し細かな数学的な議論があるのですが，入り込むと帰って来れなくなるのでここまでにしておこうと思います．とりあえず，これからは「不偏分散・不偏標準偏差」が使われることが多い，とだけ覚えておいて下さい．</p>
+
+<p>興味のある方は<a href='http://kosugitti.sakura.ne.jp/wp/wp-content/uploads/2013/08/est.pdf' title=''>コチラ</a>をご参照ください．</p>
+
+</article></slide><slide class="segue dark nobackground level1"><hgroup class = 'auto-fadein'><h2>今回のトピック</h2></hgroup><article  id="今回のトピック" class="section">
 
 </article></slide><slide class=""><hgroup><h2>関数とパッケージ</h2></hgroup><article  id="関数とパッケージ">
 
@@ -3567,6 +3589,7 @@ radiant()
 
 <ul>
 <li>&ldquo;From Text (readr)…&rdquo;をクリックする．</li>
+<li>何かをインストールするように案内されたら，素直にインストールする．</li>
 </ul></li>
 <li>&ldquo;Browse&rdquo;をクリックする
 
@@ -3649,7 +3672,10 @@ exdataset &lt;- read_csv(&quot;/Users/akira/Dropbox/Education/2020MEIJI/[3_Wed1]
 
 <pre >## See spec(...) for full column specifications.</pre>
 
-<pre class = 'prettyprint lang-r'>library(ggplot2)
+<pre class = 'prettyprint lang-r'>library(ggplot2)</pre>
+
+<pre class = 'prettyprint lang-r'># データを読み込めたら，以下をコピペしてください．
+# いろいろなものの順番を理解しやすいように並べ替えます．
 
 ## Reordering exdataset$ARE
 exdataset$ARE &lt;- factor(exdataset$ARE, levels=c(&quot;Kanto&quot;, &quot;Hokkaido&quot;, &quot;Tohoku&quot;, &quot;Chubu&quot;, &quot;Kinki&quot;, &quot;Chugoku&quot;, &quot;Shikoku&quot;, &quot;Kyushu&quot;))
@@ -3690,7 +3716,7 @@ exdataset$CHI &lt;- factor(exdataset$CHI, levels=c(&quot;NoChild&quot;, &quot;Ch
 
 </article></slide><slide class=""><hgroup><h2></h2></hgroup><article >
 
-<h3>主観的幸福度(SUB_HAP)のヒストグラム</h3>
+<h3>主観的幸福度(SUB_HAP)の<strong>ヒストグラム</strong></h3>
 
 <pre class = 'prettyprint lang-r'>g &lt;- ggplot(exdataset, aes(x = SUB_HAP)) + geom_histogram(binwidth = 1.0)
 g</pre>
@@ -3699,7 +3725,7 @@ g</pre>
 
 </article></slide><slide class=""><hgroup><h2></h2></hgroup><article >
 
-<h3><strong>頻度</strong>を数えてみる．</h3>
+<h3>運命(SPN_UNM)の<strong>頻度</strong>を数えてみる．</h3>
 
 <pre class = 'prettyprint lang-r'>table(exdataset$SPN_UNM)</pre>
 
@@ -3709,7 +3735,7 @@ g</pre>
 
 </article></slide><slide class=""><hgroup><h2></h2></hgroup><article >
 
-<h3>ついでにヒストグラムも作ってみよう</h3>
+<h3>ついで運命(SPN_UNM)のに<strong>ヒストグラム</strong>も作ってみよう</h3>
 
 <pre class = 'prettyprint lang-r'>g &lt;- ggplot(exdataset, aes(x = SPN_UNM)) + geom_histogram(binwidth = 1.0)
 g</pre>
@@ -3718,7 +3744,7 @@ g</pre>
 
 </article></slide><slide class=""><hgroup><h2></h2></hgroup><article >
 
-<h3>世代の頻度を数えてみる．</h3>
+<h3>世代の<strong>頻度</strong>を数えてみる．</h3>
 
 <pre class = 'prettyprint lang-r'>table(exdataset$F_GEN)</pre>
 
@@ -3729,6 +3755,14 @@ g</pre>
 <ul>
 <li>基本的には『関数』を用いた計算方法を紹介する．</li>
 </ul>
+
+</article></slide><slide class=""><hgroup><h2>同じことをjamoviでやってみよう．</h2></hgroup><article  id="同じことをjamoviでやってみよう">
+
+<ul>
+<li>動画を参照のこと</li>
+</ul>
+
+</article></slide><slide class="segue dark nobackground level1"><hgroup class = 'auto-fadein'><h2>まとめと演習問題</h2></hgroup><article  id="まとめと演習問題" class="section">
 
 </article></slide><slide class=""><hgroup><h2>今日のTake Home Messages</h2></hgroup><article  id="今日のtake-home-messages">
 
@@ -3744,16 +3778,36 @@ g</pre>
 <ul>
 <li>これがイメージできれば，Excelより何よりもRは強力な武器になるはず！！</li>
 </ul></li>
-<li>基本的には<strong>平均</strong>，<strong>分散</strong>，<strong>標準偏差</strong>を押さえよう．
+<li>基本的にはデータについて<strong>平均</strong>，<strong>分散</strong>，<strong>標準偏差</strong>を押さえよう．
 
 <ul>
 <li>さらには<strong>最大値</strong>，<strong>最小値</strong>まで押さえておくと良い．</li>
 </ul></li>
+</ul>
+
+</article></slide><slide class=""><hgroup><h2></h2></hgroup><article >
+
+<ul>
 <li>ホントは1つずつ確認するが，分量によっては<strong>関数</strong>を使いこなすことも必要．
 
 <ul>
 <li>ホントはどんどん便利な関数がたくさんあったり．</li>
 </ul></li>
+<li>jamoviを使うとまぁ便利！
+
+<ul>
+<li>しかし，できることが制限されるので自由にできるR最高!</li>
+</ul></li>
+</ul>
+
+</article></slide><slide class=""><hgroup><h2>演習問題</h2></hgroup><article  id="演習問題">
+
+<ul>
+<li>生活満足度(SUB_SAT)および睡眠満足度(SLP_SAT)について，平均値，分散，標準偏差，頻度を算出し，ヒストグラムを作成してください．</li>
+<li>同じことをjamoviでも実行して，自身で算出ができることを確認しておいてください．</li>
+<li>ここまでの作業で行ったRコードを提出してください．</li>
+<li>前の講義で説明したとおり，学生番号と日付で名前をつけてください．</li>
+<li>提出先はOh-o!Meijiに用意します．</li>
 </ul>
 
 </article></slide><slide class=""><hgroup><h2>Rでデータを扱う時に注意すべきこと</h2></hgroup><article  id="rでデータを扱う時に注意すべきこと">
@@ -3782,16 +3836,6 @@ g</pre>
 <li>周りの友人に聞いたり，教員に確認したりしよう．</li>
 </ul></li>
 <li>文字化け対策に<strong><a href='https://docs.google.com/document/d/1CYF6LeFeGV9dTWHGuznkO0Tm4RnhAu2KatdSqFn7bmU/edit' title=''>こちら</a></strong> のp8以降を確認して設定しよう．</li>
-</ul>
-
-</article></slide><slide class="segue dark nobackground level1"><hgroup class = 'auto-fadein'><h2>演習問題</h2></hgroup><article  id="演習問題">
-
-</article></slide><slide class=""><hgroup><h2>演習問題</h2></hgroup><article  id="演習問題-1">
-
-<ul>
-<li>今日の作業で使ったRコードを提出してください．</li>
-<li>前の講義で説明したとおり，学生番号と日付で名前をつけてください．</li>
-<li>提出先はOh-o!Meijiに用意します．</li>
 </ul></article></slide>
 
 
