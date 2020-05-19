@@ -1,0 +1,305 @@
+---
+title: "コロナウイルス関連データ"
+author: "後藤　晶"
+date: "2020/5/18"
+output: html_document
+---
+
+# パッケージのインストールと読み込み
+```{r}
+# install the package
+# install.packages("remote", dependencies = T)：初回だけ必要
+remotes::install_github("covid19datahub/R")
+# データを読み込むために毎回必要
+
+
+# load the package
+library("COVID19")
+library(dplyr)
+library(ggplot2)
+library(DT)
+```
+
+* COVID-19データハブの目的は、COVID-19の理解を深めるのに役立つ外生変数と結合された、世界的にきめ細かな症例データを収集することによって、研究コミュニティに統一されたデータハブを提供することである。
+
+* 少しインストールが難しいかもしれません．
+  - なかなか一発で必要なパッケージが入ってくれないかも．．．
+
+
+
+# データを呼び出す
+```{r}
+# 世界中の国ごとのデータ
+x <- covid19()
+
+# 世界中の都道府県レベルのデータ
+# x <- covid19(level = 2)
+
+# イタリアとアメリカの市区町村レベルのデータ
+# x <- covid19(c("Italy","US"), level = 3)
+```
+
+# 世界銀行のデータとマージ（結合）
+```{r}
+
+wb <- c("gdp" = "NY.GDP.MKTP.CD", "hosp_beds" = "SH.MED.BEDS.ZS")
+x  <- covid19(wb = wb)
+
+# x2という名前のオブジェクトに5/17現在のデータのみを取り出してしまう．
+x2 <- x %>%
+  filter(date=="2020-05-17")
+
+datatable(x2, extensions = 'Buttons', 
+          options = list(
+            dom = 'Bfrtip',
+            buttons = c('copy', 'csv', 'excel')
+  ))
+
+```
+
+
+# Google モビリティデータとの結合
+
+```{r}
+gmr <- "https://www.gstatic.com/covid19/mobility/Global_Mobility_Report.csv"
+gmr_x   <- covid19(gmr = gmr)
+
+# gmr_x2という名前のオブジェクトに5/7のデータのみを取り出してしまう．
+gmr_x2 <- x %>%
+  filter(date=="2020-05-07")
+
+datatable(gmr_x2, extensions = 'Buttons', 
+          options = list(
+            dom = 'Bfrtip',
+            buttons = c('copy', 'csv', 'excel')
+  ))
+
+```
+
+* データが5/7までっぽい
+  - もっと日が近くなると入力されていないデータもあるので，ここまでにしておきましょう．
+
+
+
+# Apple モビリティデータとの結合
+
+```{r}
+amr <- "https://covid19-static.cdn-apple.com/covid19-mobility-data/"
+amr <- paste0(amr, "2008HotfixDev28/v2/en-us/applemobilitytrends-2020-05-15.csv")
+amr_x   <- covid19(amr = amr)
+
+# amr_x2という名前のオブジェクトに5/07現在のデータのみを取り出してしまう．
+amr_x2 <- x %>%
+  filter(date=="2020-05-07")
+
+datatable(amr_x2, extensions = 'Buttons', 
+          options = list(
+            dom = 'Bfrtip',
+            buttons = c('copy', 'csv', 'excel')
+  ))
+
+```
+
+* Appleの方がモビリティデータが少ない（全世界があるわけではない）ので，データとしては微妙かもしれない．
+
+
+
+
+# Googleのモビリティデータと世界銀行データの結合
+
+```{r}
+wb <- c("gdp" = "NY.GDP.MKTP.CD", "hosp_beds" = "SH.MED.BEDS.ZS")
+gmr <- "https://www.gstatic.com/covid19/mobility/Global_Mobility_Report.csv"
+
+wb_gmr_data   <- covid19(gmr = gmr,
+                         wb = wb)
+
+# wb_gmr_data2という名前のオブジェクトに5/7のデータのみを取り出してしまう．
+wb_gmr_data2 <- wb_gmr_data %>%
+  filter(date=="2020-05-07")
+
+
+datatable(wb_gmr_data2, extensions = 'Buttons', 
+          options = list(
+            dom = 'Bfrtip',
+            buttons = c('copy', 'csv', 'excel')
+  ))
+
+
+```
+
+
+
+
+
+# データソースのリスト
+```{r}
+# Data sources
+s <- attr(wb_gmr_data2, "src")
+
+datatable(s, extensions = 'Buttons', 
+          options = list(
+            dom = 'Bfrtip',
+            buttons = c('copy', 'csv', 'excel')
+  ))
+
+```
+* どこから持ってきたデータか．
+  - いっぱいあって見にくいので，テーブル形式で見やすいようにした．
+
+
+# csv形式で直接書き出すときのコード
+```{r}
+
+write.csv(wb_gmr_data2, "corona_data.csv")
+
+```
+
+* write.csvを走らせると，csvファイルとしてデータを取り出してくれる．
+  - 皆さんのフォルダも見てみよう．
+
+
+# 可視化してみる．
+```{r}
+# 必要に応じて
+# install.packages("ggplotgui")
+
+#library(ggplotgui)
+#ggplot_shiny(wb_gmr_data2)
+
+```
+
+* 「#」を外して実行すると簡単なグラフを作ることができます．
+  - コードなども色々ありますが，まあ参考まで．
+
+
+# ちょっと違うところのデータをいじってみましょう．
+```{r}
+
+# install.packages("devtools")：初回だけ
+# devtools::install_github("RamiKrispin/coronavirus")：初回だけ
+
+# 毎回データのリフレッシュが必要
+library(coronavirus)
+update_dataset()  
+
+
+```
+* coronavirusパッケージは、2019年新型コロナウイルスCOVID-19（2019-nCoV）流行のTidy形式のデータセットを提供します。ジョンズ・ホプキンス大学システム科学工学センター（JHUCCSE）のコロナウイルスリポジトリから引っ張ってきた生データです。
+
+
+# データの全体を見てみよう
+```{r}
+datatable(coronavirus, extensions = 'Buttons', 
+          options = list(
+            dom = 'Bfrtip',
+            buttons = c('copy', 'csv', 'excel')
+  ))
+```
+
+
+# Summary of the total confrimed cases by country (top 20):
+```{r}
+
+library(dplyr)
+
+summary_df <- coronavirus %>% 
+  filter(type == "confirmed") %>%
+  group_by(country) %>%
+  summarise(total_cases = sum(cases)) %>%
+  arrange(-total_cases)
+
+datatable(summary_df, extensions = 'Buttons', 
+          options = list(
+            dom = 'Bfrtip',
+            buttons = c('copy', 'csv', 'excel')
+  ))
+```
+
+# Summary of new cases during the past 24 hours by country and type
+```{r}
+
+library(tidyr)
+
+coronavirus %>% 
+  filter(date == max(date)) %>%
+  select(country, type, cases) %>%
+  group_by(country, type) %>%
+  summarise(total_cases = sum(cases)) %>%
+  pivot_wider(names_from = type,
+              values_from = total_cases) %>%
+  arrange(-confirmed)
+```
+
+
+# Plotting the total cases by type worldwide:
+```{r}
+
+
+library(plotly)
+
+coronavirus %>% 
+  group_by(type, date) %>%
+  summarise(total_cases = sum(cases)) %>%
+  pivot_wider(names_from = type, values_from = total_cases) %>%
+  arrange(date) %>%
+  mutate(active = confirmed - death - recovered) %>%
+  mutate(active_total = cumsum(active),
+                recovered_total = cumsum(recovered),
+                death_total = cumsum(death)) %>%
+  plot_ly(x = ~ date,
+                  y = ~ active_total,
+                  name = 'Active', 
+                  fillcolor = '#1f77b4',
+                  type = 'scatter',
+                  mode = 'none', 
+                  stackgroup = 'one') %>%
+  add_trace(y = ~ death_total, 
+             name = "Death",
+             fillcolor = '#E41317') %>%
+  add_trace(y = ~recovered_total, 
+            name = 'Recovered', 
+            fillcolor = 'forestgreen') %>%
+  layout(title = "Distribution of Covid19 Cases Worldwide",
+         legend = list(x = 0.1, y = 0.9),
+         yaxis = list(title = "Number of Cases"),
+         xaxis = list(title = "Source: Johns Hopkins University Center for Systems Science and Engineering"))
+```
+
+
+# Plot the confirmed cases distribution by counrty with treemap plot:
+```{r}
+
+conf_df <- coronavirus %>% 
+  filter(type == "confirmed") %>%
+  group_by(country) %>%
+  summarise(total_cases = sum(cases)) %>%
+  arrange(-total_cases) %>%
+  mutate(parents = "Confirmed") %>%
+  ungroup() 
+  
+  plot_ly(data = conf_df,
+          type= "treemap",
+          values = ~total_cases,
+          labels= ~ country,
+          parents=  ~parents,
+          domain = list(column=0),
+          name = "Confirmed",
+          textinfo="label+value+percent parent")
+```
+
+
+
+# 課題用データ：
+```{r}
+datatable(wb_gmr_data2, extensions = 'Buttons', 
+          options = list(
+            dom = 'Bfrtip',
+            buttons = c('copy', 'csv', 'excel')
+  ))
+```
+
+* jamoviで作業する時は一度「csv」をクリックしてから，保存してjamoviで動かしてみましょう．
+
+
+
