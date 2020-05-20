@@ -3291,16 +3291,17 @@ math display {
 
 <ul>
 <li><strong>平均値</strong>：全てのデータを足して割ったもの．一般的に代表値（データ全体を表している数値）として扱われる．</li>
-<li><strong>分散</strong>：平均値とそれぞれの値の差を求めて2乗して，合計したものをデータの個数で割ったもの．データの散らばり具合を示す数値であり，分散が大きければ大きいほど，データが散らばっていることを示す．
+<li><strong>分散</strong>：平均値とそれぞれの値の差を求めて2乗して，合計したものをデータの個数で割ったもの．データの散らばり具合を示す数値である．
 
 <ul>
 <li>\(\sigma^2\) という記号で表される．</li>
-<li>\((分散)=\Sigma\{(データの値)-(平均値)\}^2/(データの個数)\)</li>
+<li>\(分散=\Sigma\{データの値-平均値\}^2/データの個数\)</li>
 </ul></li>
 <li><strong>標準偏差</strong>：分散の平方根．通常の長さのばらつきを評価する際には同じ単位で理解したほうがわかりやすいために用いる．
 
 <ul>
 <li>\(\sigma\) という記号で表される．</li>
+<li>標準偏差 = \(\sqrt{分散}\)</li>
 </ul></li>
 </ul>
 
@@ -3409,8 +3410,6 @@ table(weight)  </pre>
 
 <p>左から順番に「最小値，第1四分位数，中央値，平均値，第3四分位数，最大値」を示しています．</p>
 
-</article></slide><slide class="segue dark nobackground level1"><hgroup class = 'auto-fadein'><h2>分散と標準偏差を手計算で算出してみよう</h2></hgroup><article  id="分散と標準偏差を手計算で算出してみよう">
-
 </article></slide><slide class=""><hgroup><h2>分散を算出する</h2></hgroup><article  id="分散を算出する">
 
 <p><strong>\[\sigma^2=\Sigma{((データの値)-(平均値)})^2/(データの個数)\]</strong></p>
@@ -3429,6 +3428,8 @@ table(weight)  </pre>
 mean_weight</pre>
 
 <pre >## [1] 68.28571</pre>
+
+</article></slide><slide class=""><hgroup><h2></h2></hgroup><article >
 
 <h3>平均からの偏差を求めて，オブジェクトに入れる</h3>
 
@@ -3557,23 +3558,19 @@ sd(weight)</pre>
 <ol>
 <li>パッケージをインストールする．</li>
 <li>パッケージを読み込む．</li>
-<li>関数を使う．</li>
 </ol>
 
-<p>1.については，一度行うだけで良い．<br/>2, 3にについては必要に応じて適宜実施する．</p>
+<p>1.については，一度行うだけで良い．<br/>2については必要に応じて適宜実施する．</p>
 
 </article></slide><slide class=""><hgroup><h2></h2></hgroup><article >
 
 <p>以下にはその一例を示す．</p>
 
-<pre >install.packages(“radiant”, dependencies = TRUE)
-パッケージをインストールする．今日やるだけで良い．
+<pre >install.packages(“dplyr”, dependencies = TRUE)
+パッケージをインストールする．一度実行するだけで良い．
 
-library(radiant)
+library(dplyr)
 パッケージを読み込む，使うときには必ず入力する
-
-radiant()
-パッケージを起動する．これを入力することで起動できる．
 </pre>
 
 </article></slide><slide class=""><hgroup><h2>他のデータを読み込む</h2></hgroup><article  id="他のデータを読み込む">
@@ -3803,7 +3800,7 @@ g</pre>
 </article></slide><slide class=""><hgroup><h2>演習問題</h2></hgroup><article  id="演習問題">
 
 <ul>
-<li>生活満足度(SUB_SAT)および睡眠満足度(SLP_SAT)について，平均値，分散，標準偏差，頻度を算出し，ヒストグラムを作成してください．</li>
+<li>生活満足度(SUB_SAT)および睡眠満足度(SUB_SLP)について，平均値，分散，標準偏差，頻度を算出し，ヒストグラムを作成してください．</li>
 <li>同じことをjamoviでも実行して，自身で算出ができることを確認しておいてください．</li>
 <li>ここまでの作業で行ったRコードを提出してください．</li>
 <li>前の講義で説明したとおり，学生番号と日付で名前をつけてください．</li>
