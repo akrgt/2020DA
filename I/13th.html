@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>データ解析論I第13講</title>
+  <title>データ解析論I第13/14講</title>
 
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="chrome=1">
@@ -19,7 +19,7 @@
     var SLIDE_CONFIG = {
       // Slide settings
       settings: {
-                title: 'データ解析論I第13講',
+                title: 'データ解析論I第13/14講',
                         useBuilds: true,
         usePrettify: true,
         enableSlideAreas: true,
@@ -3260,7 +3260,7 @@ h5 {
 }
 
 strong {
-  font-size: 1.2rem;
+  font-size: 2rem;
   color:#ff00ff;
   font-family: 'mplus-1p-heavy', sans-serif;
 }
@@ -3271,7 +3271,7 @@ pre {
 }
 
 em {
-  font-size: 1.2rem;
+  font-size: 2rem;
   color:#000000;
   font-family: 'mplus-1p-light', sans-serif;
 }
@@ -3285,7 +3285,7 @@ math display {
 
 </style>
 
-</article></slide><slide class="segue dark nobackground level1"><hgroup class = 'auto-fadein'><h2>前回の復習</h2></hgroup><article  id="前回の復習" class="section">
+</article></slide><slide class="segue dark nobackground level1"><hgroup class = 'auto-fadein'><h2>前回の復習</h2></hgroup><article  class="section" id="前回の復習">
 
 </article></slide><slide class=""><hgroup><h2>2要因分散分析（交互作用なし）</h2></hgroup><article  id="要因分散分析交互作用なし">
 
@@ -3366,9 +3366,29 @@ math display {
 
 <p>さて，それでは仮説を立ててみましょう．今回分析するテーマは「主観的幸福度(SUB_HAP)が子の有無(CHI)と結婚(MAR)によって異なる」かどうかを分析します．二要因分散分析（交互作用なし）の場合は以下のような仮説を立てます．</p>
 
+<ul>
+<li>対立仮説1：主観的幸福度の平均値は結婚によって異なる
 
+<ul>
+<li>正確には主観的幸福度の平均値は「子どもの有無に関わらず」結婚によって異なる</li>
+</ul></li>
+<li>対立仮説2：主観的幸福度の平均値は子どもの有無によって異なる
 
-<p>この2つの仮説のもとに分析を行ないます．</p>
+<ul>
+<li>正確には主観的幸福度の平均値は「結婚に関わらず」子どもの有無によって異なる</li>
+</ul></li>
+</ul>
+
+</article></slide><slide class=""><hgroup><h2></h2></hgroup><article >
+
+<ul>
+<li>帰無仮説1：主観的幸福度の平均値は結婚によって異なるとはいえない</li>
+<li>帰無仮説2：主観的幸福度の平均値は子どもの有無によって異なるとはいえない</li>
+</ul>
+
+<p>これらの仮説のもとに分析を行ないます．</p>
+
+<p>※「正確には」の部分は秋学期に改めて紹介しますが，重回帰分析では「統制する」なんて言い方をします．例えば，対立仮説1が支持された場合は，<em>「子どもがいてもいなくても」</em>結婚が主観的幸福度に影響を与える，というように解釈します．</p>
 
 </article></slide><slide class=""><hgroup><h2>平均値をプロットする</h2></hgroup><article  id="平均値をプロットする">
 
@@ -3777,7 +3797,7 @@ huxreg(marchihap_model,marchihap_model_noint)</pre>
     これについて，分散分析の時は以下のコードを使っています．
     anova(オブジェクト)</pre>
 
-</article></slide><slide class="segue dark nobackground level1"><hgroup class = 'auto-fadein'><h2>今回のタスク</h2></hgroup><article  id="今回のタスク" class="section">
+</article></slide><slide class="segue dark nobackground level1"><hgroup class = 'auto-fadein'><h2>今回のタスク</h2></hgroup><article  class="section" id="今回のタスク">
 
 </article></slide><slide class=""><hgroup><h2>最後の演習問題です．</h2></hgroup><article  id="最後の演習問題です">
 
@@ -3896,7 +3916,7 @@ huxreg(marchihap_model,marchihap_model_noint)</pre>
 <li>どちらで評価をするのか明記しておいてください．</li>
 </ul>
 
-</article></slide><slide class="segue dark nobackground level1"><hgroup class = 'auto-fadein'><h2>最後に</h2></hgroup><article  id="最後に" class="section">
+</article></slide><slide class="segue dark nobackground level1"><hgroup class = 'auto-fadein'><h2>最後に</h2></hgroup><article  class="section" id="最後に">
 
 </article></slide><slide class=""><hgroup><h2>最後に</h2></hgroup><article  id="最後に-1">
 
